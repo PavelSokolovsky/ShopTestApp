@@ -22,6 +22,7 @@ namespace ShopTestApp.Views.Windows
     {
         public static MyProductsPage productAtHomePage = new MyProductsPage();
         public static ChangeAmountPage changeAmountPage = new ChangeAmountPage();
+        public static OrdersPage ordersPage = new OrdersPage();
         public ProductsAtHomeWindow()
         {
             InitializeComponent();
@@ -35,6 +36,11 @@ namespace ShopTestApp.Views.Windows
         private void ChangeAmount_Click(object sender, RoutedEventArgs e)
         {
             frame.Content = changeAmountPage;
+        }
+
+        private void OrdersHistory_Click(object sender, RoutedEventArgs e)
+        {
+            frame.Content = ordersPage;
         }
     }
 }

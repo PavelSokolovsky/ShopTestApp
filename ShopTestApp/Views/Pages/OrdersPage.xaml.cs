@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ShopTestApp.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,14 @@ namespace ShopTestApp.Views.Pages
     /// </summary>
     public partial class OrdersPage : Page
     {
+        List<Orders> orders = new List<Orders>();
         public OrdersPage()
         {
             InitializeComponent();
+            orders = Helpers.EntityHelper.shopDB.Orders.ToList();
+            dataGridOrder.ItemsSource = orders.ToList();
+
+
         }
     }
 }

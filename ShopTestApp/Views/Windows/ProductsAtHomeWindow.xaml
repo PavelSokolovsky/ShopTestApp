@@ -17,7 +17,7 @@
         <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Center">
             <Button Content="Мои продукты" Width="100" Margin="5" Name="MyProducts" Click="MyProducts_Click"/>
             <Button Content="Изменить запасы" Width="100" Margin="5" Name="ChangeAmount" Click="ChangeAmount_Click"/>
-            <Button Content="Заказы" Width="100" Margin="5"/>
+            <Button Content="Заказы" Width="100" Margin="5" Name="OrdersHistory" Click="OrdersHistory_Click"/>
             <Button Content="Button 4" Width="100" Margin="5"/>
             <Button Content="Button 5" Width="100" Margin="5"/>
         </StackPanel>
