@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="4d66c1ad47264921b03ee7a9f57f621a" Name="Diagram1">
+        <EntityTypeShape EntityType="ShopTestDBModel.Orders" Width="1.5" PointX="3" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ShopTestDBModel.Products" Width="1.5" PointX="0.75" PointY="2.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ShopTestDBModel.sysdiagrams" Width="1.5" PointX="2.75" PointY="6.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ShopTestDBModel.Users" Width="1.5" PointX="0.75" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="ShopTestDBModel.UsersProducts" Width="1.5" PointX="6" PointY="2.625" IsExpanded="true" />
+        <AssociationConnector Association="ShopTestDBModel.FK_Orders_Products" ManuallyRouted="false" />
+        <AssociationConnector Association="ShopTestDBModel.FK_Orders_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="ShopTestDBModel.FK_UsersProducts_Products" ManuallyRouted="false" />
+        <AssociationConnector Association="ShopTestDBModel.FK_UsersProducts_Users" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
