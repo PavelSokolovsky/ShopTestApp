@@ -48,7 +48,7 @@ namespace ShopTestApp.Views.Pages
             else
             {
                 MessageBox.Show("Продукт с данным штрихкодом не найден");
-            }
+            } 
         }
     }
 }
