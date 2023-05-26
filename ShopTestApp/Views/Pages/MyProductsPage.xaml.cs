@@ -23,16 +23,23 @@ namespace ShopTestApp.Views.Pages
     public partial class MyProductsPage : Page
     {   
         List<UsersProducts> usersProducts = new List<UsersProducts>();
+        public Orders orders = new Orders();
+        public static UsersProducts products = new UsersProducts();
+
+
         public MyProductsPage()
         {
             InitializeComponent();
-            
+
             usersProducts = Helpers.EntityHelper.shopDB.UsersProducts.ToList();
-            dataGrid.ItemsSource = usersProducts.ToList();
+            dataGrid.ItemsSource = usersProducts.ToList(); 
         }
+           public int needToBuy = products.amountMAX - products.amountMin;
+
 
         private void ScanBtn_Click(object sender, RoutedEventArgs e)
-        {
+        {   
+            // Скан использованного товара
             string barcode = txtBoxBarcode.Text;
 
             UsersProducts productInHome = Helpers.EntityHelper.shopDB.UsersProducts.FirstOrDefault(p => p.Products.barCode == barcode);
@@ -44,6 +51,15 @@ namespace ShopTestApp.Views.Pages
                 dataGrid.ItemsSource = Helpers.EntityHelper.shopDB.Products.ToList();
                 usersProducts = Helpers.EntityHelper.shopDB.UsersProducts.ToList();
                 dataGrid.ItemsSource = usersProducts.ToList();
+
+                // Генерация заказа
+                if (productInHome.amountCurrent == productInHome.amountMin) 
+                {
+                    orders.idUsers = 1;
+                    orders.idProducts = 1;
+                    orders.amounInOrder = needToBuy;
+                    orders.orderDate = DateTime.Now;
+                }
             }
             else
             {
