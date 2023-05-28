@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ShopTestApp.Helpers
 {
-    internal class EntityHelper
+    public static class EntityHelper
     {
         public static ShopTestDBEntities shopDB = new ShopTestDBEntities();
     }

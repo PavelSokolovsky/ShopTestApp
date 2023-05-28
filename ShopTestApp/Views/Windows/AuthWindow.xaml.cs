@@ -20,11 +20,18 @@ namespace ShopTestApp.Views.Windows
     /// Логика взаимодействия для AuthWindow.xaml
     /// </summary>
     public partial class AuthWindow : Window
-    { 
-        public static ProductsAtHomeWindow productsAtHomeWindow = new ProductsAtHomeWindow();
+    {
+        public string userLogin { get; set; }
+        public string userPassword { get; set; }
+        
+
         public AuthWindow()
         {
             InitializeComponent();
+
+            
+
+            
         }
 
         private void BtnLogin_Click(object sender, RoutedEventArgs e)
@@ -32,9 +39,14 @@ namespace ShopTestApp.Views.Windows
             var auth = Helpers.EntityHelper.shopDB.Users.Where(i => i.login == txtLogin.Text && i.password == txtPassword.Password).ToList();
             if (auth.Count>0)
             {
+                userLogin = txtLogin.Text;
+                userPassword = txtPassword.Password;
+                
                 MessageBox.Show("Вы успешно вошли");
+                ProductsAtHomeWindow productsAtHomeWindow = new ProductsAtHomeWindow();
                 productsAtHomeWindow.Show();
                 this.Close();
+                
             }
             else MessageBox.Show("Пользователь не найден");
         }

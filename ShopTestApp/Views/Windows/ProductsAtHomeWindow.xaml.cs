@@ -1,4 +1,5 @@
-﻿using ShopTestApp.Views.Pages;
+﻿using ShopTestApp.Helpers;
+using ShopTestApp.Views.Pages;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,9 +24,15 @@ namespace ShopTestApp.Views.Windows
         public static MyProductsPage productAtHomePage = new MyProductsPage();
         public static ChangeAmountPage changeAmountPage = new ChangeAmountPage();
         public static OrdersPage ordersPage = new OrdersPage();
+        public  AuthWindow authWindow = new AuthWindow();
         public ProductsAtHomeWindow()
         {
             InitializeComponent();
+            
+            MakeOrder makeOrder = new MakeOrder();
+            makeOrder.CheckAndCreateOrders();
+            AddProductsToOrder addProductsToOrder = new AddProductsToOrder();
+            addProductsToOrder.AddProduct();
         }
 
         private void MyProducts_Click(object sender, RoutedEventArgs e)
@@ -41,6 +48,12 @@ namespace ShopTestApp.Views.Windows
         private void OrdersHistory_Click(object sender, RoutedEventArgs e)
         {
             frame.Content = ordersPage;
+        }
+
+        private void ExitBtn_Click(object sender, RoutedEventArgs e)
+        {
+            authWindow.Show();
+            this.Close();
         }
     }
 }

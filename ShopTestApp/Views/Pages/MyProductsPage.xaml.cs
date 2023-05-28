@@ -1,4 +1,5 @@
-﻿using ShopTestApp.Models;
+﻿using ShopTestApp.Helpers;
+using ShopTestApp.Models;
 using ShopTestApp.Views.Windows;
 using System;
 using System.Collections.Generic;
@@ -25,11 +26,15 @@ namespace ShopTestApp.Views.Pages
         List<UsersProducts> usersProducts = new List<UsersProducts>();
         public Orders orders = new Orders();
         public static UsersProducts products = new UsersProducts();
+        
 
 
         public MyProductsPage()
         {
             InitializeComponent();
+            
+
+
 
             usersProducts = Helpers.EntityHelper.shopDB.UsersProducts.ToList();
             dataGrid.ItemsSource = usersProducts.ToList(); 
@@ -52,14 +57,6 @@ namespace ShopTestApp.Views.Pages
                 usersProducts = Helpers.EntityHelper.shopDB.UsersProducts.ToList();
                 dataGrid.ItemsSource = usersProducts.ToList();
 
-                // Генерация заказа
-                if (productInHome.amountCurrent == productInHome.amountMin) 
-                {
-                    orders.idUsers = 1;
-                    orders.idProducts = 1;
-                    orders.amounInOrder = needToBuy;
-                    orders.orderDate = DateTime.Now;
-                }
             }
             else
             {

@@ -26,6 +26,7 @@ namespace ShopTestApp.Models
         }
     
         public virtual DbSet<Orders> Orders { get; set; }
+        public virtual DbSet<PriductsInOrders> PriductsInOrders { get; set; }
         public virtual DbSet<Products> Products { get; set; }
         public virtual DbSet<sysdiagrams> sysdiagrams { get; set; }
         public virtual DbSet<Users> Users { get; set; }

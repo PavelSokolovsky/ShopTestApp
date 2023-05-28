@@ -4,16 +4,25 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="Хранилище ShopTestDBModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="Хранилище ShopTestDBModel" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="Orders">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="idUsers" Type="int" Nullable="false" />
-          <Property Name="idProducts" Type="int" Nullable="false" />
-          <Property Name="amounInOrder" Type="int" Nullable="false" />
           <Property Name="orderDate" Type="date" Nullable="false" />
+          <Property Name="orderPrice" Type="decimal" Precision="18" Scale="0" />
+          <Property Name="isActive" Type="bit" Nullable="false" />
+        </EntityType>
+        <EntityType Name="PriductsInOrders">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="idOrder" Type="int" Nullable="false" />
+          <Property Name="idProducts" Type="int" Nullable="false" />
+          <Property Name="amountInOrder" Type="int" Nullable="false" />
         </EntityType>
         <EntityType Name="Products">
           <Key>
@@ -41,8 +50,8 @@
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="name" Type="nvarchar" MaxLength="50" Nullable="false" />
-          <Property Name="login" Type="nvarchar" MaxLength="50" />
-          <Property Name="password" Type="nvarchar" MaxLength="50" />
+          <Property Name="login" Type="nvarchar" MaxLength="50" Nullable="false" />
+          <Property Name="password" Type="nvarchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="UsersProducts">
           <Key>
@@ -55,18 +64,6 @@
           <Property Name="amountCurrent" Type="int" Nullable="false" />
           <Property Name="amountMin" Type="int" Nullable="false" />
         </EntityType>
-        <Association Name="FK_Orders_Products">
-          <End Role="Products" Type="Self.Products" Multiplicity="1" />
-          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Products">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Orders">
-              <PropertyRef Name="idProducts" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Orders_Users">
           <End Role="Users" Type="Self.Users" Multiplicity="1" />
           <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
@@ -76,6 +73,30 @@
             </Principal>
             <Dependent Role="Orders">
               <PropertyRef Name="idUsers" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PriductsInOrders_Orders">
+          <End Role="Orders" Type="Self.Orders" Multiplicity="1" />
+          <End Role="PriductsInOrders" Type="Self.PriductsInOrders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PriductsInOrders">
+              <PropertyRef Name="idOrder" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PriductsInOrders_Products">
+          <End Role="Products" Type="Self.Products" Multiplicity="1" />
+          <End Role="PriductsInOrders" Type="Self.PriductsInOrders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PriductsInOrders">
+              <PropertyRef Name="idProducts" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -105,17 +126,22 @@
         </Association>
         <EntityContainer Name="Хранилище ShopTestDBModelContainer">
           <EntitySet Name="Orders" EntityType="Self.Orders" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="PriductsInOrders" EntityType="Self.PriductsInOrders" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Products" EntityType="Self.Products" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="UsersProducts" EntityType="Self.UsersProducts" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_Orders_Products" Association="Self.FK_Orders_Products">
-            <End Role="Products" EntitySet="Products" />
-            <End Role="Orders" EntitySet="Orders" />
-          </AssociationSet>
           <AssociationSet Name="FK_Orders_Users" Association="Self.FK_Orders_Users">
             <End Role="Users" EntitySet="Users" />
             <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PriductsInOrders_Orders" Association="Self.FK_PriductsInOrders_Orders">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="PriductsInOrders" EntitySet="PriductsInOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PriductsInOrders_Products" Association="Self.FK_PriductsInOrders_Products">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="PriductsInOrders" EntitySet="PriductsInOrders" />
           </AssociationSet>
           <AssociationSet Name="FK_UsersProducts_Products" Association="Self.FK_UsersProducts_Products">
             <End Role="Products" EntitySet="Products" />
@@ -126,40 +152,78 @@
             <End Role="UsersProducts" EntitySet="UsersProducts" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="ShopTestDBModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityContainer Name="ShopTestDBEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Orders" EntityType="ShopTestDBModel.Orders" />
+          <EntitySet Name="PriductsInOrders" EntityType="ShopTestDBModel.PriductsInOrders" />
+          <EntitySet Name="Products" EntityType="ShopTestDBModel.Products" />
+          <EntitySet Name="sysdiagrams" EntityType="ShopTestDBModel.sysdiagrams" />
+          <EntitySet Name="Users" EntityType="ShopTestDBModel.Users" />
+          <EntitySet Name="UsersProducts" EntityType="ShopTestDBModel.UsersProducts" />
+          <AssociationSet Name="FK_Orders_Users" Association="ShopTestDBModel.FK_Orders_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Orders" EntitySet="Orders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PriductsInOrders_Orders" Association="ShopTestDBModel.FK_PriductsInOrders_Orders">
+            <End Role="Orders" EntitySet="Orders" />
+            <End Role="PriductsInOrders" EntitySet="PriductsInOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_PriductsInOrders_Products" Association="ShopTestDBModel.FK_PriductsInOrders_Products">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="PriductsInOrders" EntitySet="PriductsInOrders" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsersProducts_Products" Association="ShopTestDBModel.FK_UsersProducts_Products">
+            <End Role="Products" EntitySet="Products" />
+            <End Role="UsersProducts" EntitySet="UsersProducts" />
+          </AssociationSet>
+          <AssociationSet Name="FK_UsersProducts_Users" Association="ShopTestDBModel.FK_UsersProducts_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="UsersProducts" EntitySet="UsersProducts" />
+          </AssociationSet>
+        </EntityContainer>
         <EntityType Name="Orders">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="idUsers" Type="Int32" Nullable="false" />
-          <Property Name="idProducts" Type="Int32" Nullable="false" />
-          <Property Name="amounInOrder" Type="Int32" Nullable="false" />
           <Property Name="orderDate" Type="DateTime" Nullable="false" Precision="0" />
-          <NavigationProperty Name="Products" Relationship="Self.FK_Orders_Products" FromRole="Orders" ToRole="Products" />
-          <NavigationProperty Name="Users" Relationship="Self.FK_Orders_Users" FromRole="Orders" ToRole="Users" />
+          <Property Name="orderPrice" Type="Decimal" Precision="18" Scale="0" />
+          <Property Name="isActive" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="Users" Relationship="ShopTestDBModel.FK_Orders_Users" FromRole="Orders" ToRole="Users" />
+          <NavigationProperty Name="PriductsInOrders" Relationship="ShopTestDBModel.FK_PriductsInOrders_Orders" FromRole="Orders" ToRole="PriductsInOrders" />
+        </EntityType>
+        <EntityType Name="PriductsInOrders">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idOrder" Type="Int32" Nullable="false" />
+          <Property Name="idProducts" Type="Int32" Nullable="false" />
+          <Property Name="amountInOrder" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Orders" Relationship="ShopTestDBModel.FK_PriductsInOrders_Orders" FromRole="PriductsInOrders" ToRole="Orders" />
+          <NavigationProperty Name="Products" Relationship="ShopTestDBModel.FK_PriductsInOrders_Products" FromRole="PriductsInOrders" ToRole="Products" />
         </EntityType>
         <EntityType Name="Products">
           <Key>
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="discription" Type="String" MaxLength="250" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="barCode" Type="String" MaxLength="13" FixedLength="true" Unicode="false" Nullable="false" />
-          <Property Name="price" Type="Decimal" Precision="18" Scale="0" Nullable="false" />
-          <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Products" FromRole="Products" ToRole="Orders" />
-          <NavigationProperty Name="UsersProducts" Relationship="Self.FK_UsersProducts_Products" FromRole="Products" ToRole="UsersProducts" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="discription" Type="String" Nullable="false" MaxLength="250" FixedLength="false" Unicode="true" />
+          <Property Name="barCode" Type="String" Nullable="false" MaxLength="13" FixedLength="true" Unicode="false" />
+          <Property Name="price" Type="Decimal" Nullable="false" Precision="18" Scale="0" />
+          <NavigationProperty Name="PriductsInOrders" Relationship="ShopTestDBModel.FK_PriductsInOrders_Products" FromRole="Products" ToRole="PriductsInOrders" />
+          <NavigationProperty Name="UsersProducts" Relationship="ShopTestDBModel.FK_UsersProducts_Products" FromRole="Products" ToRole="UsersProducts" />
         </EntityType>
         <EntityType Name="sysdiagrams">
           <Key>
             <PropertyRef Name="diagram_id" />
           </Key>
-          <Property Name="name" Type="String" MaxLength="128" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
           <Property Name="principal_id" Type="Int32" Nullable="false" />
           <Property Name="diagram_id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="version" Type="Int32" />
@@ -170,11 +234,11 @@
             <PropertyRef Name="id" />
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="login" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <Property Name="password" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
-          <NavigationProperty Name="Orders" Relationship="Self.FK_Orders_Users" FromRole="Users" ToRole="Orders" />
-          <NavigationProperty Name="UsersProducts" Relationship="Self.FK_UsersProducts_Users" FromRole="Users" ToRole="UsersProducts" />
+          <Property Name="name" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="login" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="password" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Orders" Relationship="ShopTestDBModel.FK_Orders_Users" FromRole="Users" ToRole="Orders" />
+          <NavigationProperty Name="UsersProducts" Relationship="ShopTestDBModel.FK_UsersProducts_Users" FromRole="Users" ToRole="UsersProducts" />
         </EntityType>
         <EntityType Name="UsersProducts">
           <Key>
@@ -186,24 +250,12 @@
           <Property Name="amountMAX" Type="Int32" Nullable="false" />
           <Property Name="amountCurrent" Type="Int32" Nullable="false" />
           <Property Name="amountMin" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Products" Relationship="Self.FK_UsersProducts_Products" FromRole="UsersProducts" ToRole="Products" />
-          <NavigationProperty Name="Users" Relationship="Self.FK_UsersProducts_Users" FromRole="UsersProducts" ToRole="Users" />
+          <NavigationProperty Name="Products" Relationship="ShopTestDBModel.FK_UsersProducts_Products" FromRole="UsersProducts" ToRole="Products" />
+          <NavigationProperty Name="Users" Relationship="ShopTestDBModel.FK_UsersProducts_Users" FromRole="UsersProducts" ToRole="Users" />
         </EntityType>
-        <Association Name="FK_Orders_Products">
-          <End Role="Products" Type="Self.Products" Multiplicity="1" />
-          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Products">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Orders">
-              <PropertyRef Name="idProducts" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Orders_Users">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="Orders" Type="Self.Orders" Multiplicity="*" />
+          <End Type="ShopTestDBModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="ShopTestDBModel.Orders" Role="Orders" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
               <PropertyRef Name="id" />
@@ -213,9 +265,33 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_PriductsInOrders_Orders">
+          <End Type="ShopTestDBModel.Orders" Role="Orders" Multiplicity="1" />
+          <End Type="ShopTestDBModel.PriductsInOrders" Role="PriductsInOrders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Orders">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PriductsInOrders">
+              <PropertyRef Name="idOrder" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_PriductsInOrders_Products">
+          <End Type="ShopTestDBModel.Products" Role="Products" Multiplicity="1" />
+          <End Type="ShopTestDBModel.PriductsInOrders" Role="PriductsInOrders" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Products">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="PriductsInOrders">
+              <PropertyRef Name="idProducts" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_UsersProducts_Products">
-          <End Role="Products" Type="Self.Products" Multiplicity="1" />
-          <End Role="UsersProducts" Type="Self.UsersProducts" Multiplicity="*" />
+          <End Type="ShopTestDBModel.Products" Role="Products" Multiplicity="1" />
+          <End Type="ShopTestDBModel.UsersProducts" Role="UsersProducts" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Products">
               <PropertyRef Name="id" />
@@ -226,8 +302,8 @@
           </ReferentialConstraint>
         </Association>
         <Association Name="FK_UsersProducts_Users">
-          <End Role="Users" Type="Self.Users" Multiplicity="1" />
-          <End Role="UsersProducts" Type="Self.UsersProducts" Multiplicity="*" />
+          <End Type="ShopTestDBModel.Users" Role="Users" Multiplicity="1" />
+          <End Type="ShopTestDBModel.UsersProducts" Role="UsersProducts" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Users">
               <PropertyRef Name="id" />
@@ -237,30 +313,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="ShopTestDBEntities" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Orders" EntityType="Self.Orders" />
-          <EntitySet Name="Products" EntityType="Self.Products" />
-          <EntitySet Name="sysdiagrams" EntityType="Self.sysdiagrams" />
-          <EntitySet Name="Users" EntityType="Self.Users" />
-          <EntitySet Name="UsersProducts" EntityType="Self.UsersProducts" />
-          <AssociationSet Name="FK_Orders_Products" Association="Self.FK_Orders_Products">
-            <End Role="Products" EntitySet="Products" />
-            <End Role="Orders" EntitySet="Orders" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Orders_Users" Association="Self.FK_Orders_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="Orders" EntitySet="Orders" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UsersProducts_Products" Association="Self.FK_UsersProducts_Products">
-            <End Role="Products" EntitySet="Products" />
-            <End Role="UsersProducts" EntitySet="UsersProducts" />
-          </AssociationSet>
-          <AssociationSet Name="FK_UsersProducts_Users" Association="Self.FK_UsersProducts_Users">
-            <End Role="Users" EntitySet="Users" />
-            <End Role="UsersProducts" EntitySet="UsersProducts" />
-          </AssociationSet>
-        </EntityContainer>
-      </Schema>
+        </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
     <edmx:Mappings>
@@ -269,55 +322,65 @@
           <EntitySetMapping Name="Orders">
             <EntityTypeMapping TypeName="ShopTestDBModel.Orders">
               <MappingFragment StoreEntitySet="Orders">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="idUsers" ColumnName="idUsers" />
-                <ScalarProperty Name="idProducts" ColumnName="idProducts" />
-                <ScalarProperty Name="amounInOrder" ColumnName="amounInOrder" />
+                <ScalarProperty Name="isActive" ColumnName="isActive" />
+                <ScalarProperty Name="orderPrice" ColumnName="orderPrice" />
                 <ScalarProperty Name="orderDate" ColumnName="orderDate" />
+                <ScalarProperty Name="idUsers" ColumnName="idUsers" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="PriductsInOrders">
+            <EntityTypeMapping TypeName="ShopTestDBModel.PriductsInOrders">
+              <MappingFragment StoreEntitySet="PriductsInOrders">
+                <ScalarProperty Name="amountInOrder" ColumnName="amountInOrder" />
+                <ScalarProperty Name="idProducts" ColumnName="idProducts" />
+                <ScalarProperty Name="idOrder" ColumnName="idOrder" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Products">
             <EntityTypeMapping TypeName="ShopTestDBModel.Products">
               <MappingFragment StoreEntitySet="Products">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="discription" ColumnName="discription" />
-                <ScalarProperty Name="barCode" ColumnName="barCode" />
                 <ScalarProperty Name="price" ColumnName="price" />
+                <ScalarProperty Name="barCode" ColumnName="barCode" />
+                <ScalarProperty Name="discription" ColumnName="discription" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="sysdiagrams">
             <EntityTypeMapping TypeName="ShopTestDBModel.sysdiagrams">
               <MappingFragment StoreEntitySet="sysdiagrams">
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
-                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
-                <ScalarProperty Name="version" ColumnName="version" />
                 <ScalarProperty Name="definition" ColumnName="definition" />
+                <ScalarProperty Name="version" ColumnName="version" />
+                <ScalarProperty Name="diagram_id" ColumnName="diagram_id" />
+                <ScalarProperty Name="principal_id" ColumnName="principal_id" />
+                <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Users">
             <EntityTypeMapping TypeName="ShopTestDBModel.Users">
               <MappingFragment StoreEntitySet="Users">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="name" ColumnName="name" />
-                <ScalarProperty Name="login" ColumnName="login" />
                 <ScalarProperty Name="password" ColumnName="password" />
+                <ScalarProperty Name="login" ColumnName="login" />
+                <ScalarProperty Name="name" ColumnName="name" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="UsersProducts">
             <EntityTypeMapping TypeName="ShopTestDBModel.UsersProducts">
               <MappingFragment StoreEntitySet="UsersProducts">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="idUsers" ColumnName="idUsers" />
-                <ScalarProperty Name="idProducts" ColumnName="idProducts" />
-                <ScalarProperty Name="amountMAX" ColumnName="amountMAX" />
-                <ScalarProperty Name="amountCurrent" ColumnName="amountCurrent" />
                 <ScalarProperty Name="amountMin" ColumnName="amountMin" />
+                <ScalarProperty Name="amountCurrent" ColumnName="amountCurrent" />
+                <ScalarProperty Name="amountMAX" ColumnName="amountMAX" />
+                <ScalarProperty Name="idProducts" ColumnName="idProducts" />
+                <ScalarProperty Name="idUsers" ColumnName="idUsers" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

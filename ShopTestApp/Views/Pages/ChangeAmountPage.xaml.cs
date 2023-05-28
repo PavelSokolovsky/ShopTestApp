@@ -37,6 +37,7 @@ namespace ShopTestApp.Views.Pages
                 productInHome.amountMAX = Convert.ToInt32(maxAmountTextBox.Text);
                 productInHome.amountMin = Convert.ToInt32(minAmountTextBox.Text);
                 Helpers.EntityHelper.shopDB.SaveChanges();
+                MessageBox.Show("Параметры указанного товара были успешно изменены");
                
             }
             else

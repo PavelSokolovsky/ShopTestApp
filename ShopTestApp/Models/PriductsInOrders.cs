@@ -12,22 +12,14 @@ namespace ShopTestApp.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class Orders
+    public partial class PriductsInOrders
     {
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Orders()
-        {
-            this.PriductsInOrders = new HashSet<PriductsInOrders>();
-        }
-    
         public int id { get; set; }
-        public int idUsers { get; set; }
-        public System.DateTime orderDate { get; set; }
-        public Nullable<decimal> orderPrice { get; set; }
-        public bool isActive { get; set; }
+        public int idOrder { get; set; }
+        public int idProducts { get; set; }
+        public int amountInOrder { get; set; }
     
-        public virtual Users Users { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<PriductsInOrders> PriductsInOrders { get; set; }
+        public virtual Orders Orders { get; set; }
+        public virtual Products Products { get; set; }
     }
 }

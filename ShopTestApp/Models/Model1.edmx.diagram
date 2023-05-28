@@ -4,16 +4,18 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="4d66c1ad47264921b03ee7a9f57f621a" Name="Diagram1">
-        <EntityTypeShape EntityType="ShopTestDBModel.Orders" Width="1.5" PointX="3" PointY="2.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ShopTestDBModel.Products" Width="1.5" PointX="0.75" PointY="2.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ShopTestDBModel.sysdiagrams" Width="1.5" PointX="2.75" PointY="6.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="ShopTestDBModel.Users" Width="1.5" PointX="0.75" PointY="7.875" IsExpanded="true" />
-        <EntityTypeShape EntityType="ShopTestDBModel.UsersProducts" Width="1.5" PointX="6" PointY="2.625" IsExpanded="true" />
-        <AssociationConnector Association="ShopTestDBModel.FK_Orders_Products" ManuallyRouted="false" />
-        <AssociationConnector Association="ShopTestDBModel.FK_Orders_Users" ManuallyRouted="false" />
-        <AssociationConnector Association="ShopTestDBModel.FK_UsersProducts_Products" ManuallyRouted="false" />
-        <AssociationConnector Association="ShopTestDBModel.FK_UsersProducts_Users" ManuallyRouted="false" />
+      <Diagram DiagramId="4d66c1ad47264921b03ee7a9f57f621a" Name="Diagram1" ZoomLevel="86">
+        <EntityTypeShape EntityType="ShopTestDBModel.Orders" Width="1.5" PointX="3" PointY="6.125" />
+        <EntityTypeShape EntityType="ShopTestDBModel.PriductsInOrders" Width="1.5" PointX="5.25" PointY="6.125" />
+        <EntityTypeShape EntityType="ShopTestDBModel.Products" Width="1.5" PointX="0.75" PointY="7.75" />
+        <EntityTypeShape EntityType="ShopTestDBModel.sysdiagrams" Width="1.5" PointX="5.75" PointY="0.75" />
+        <EntityTypeShape EntityType="ShopTestDBModel.Users" Width="1.5" PointX="0.75" PointY="2.875" />
+        <EntityTypeShape EntityType="ShopTestDBModel.UsersProducts" Width="1.5" PointX="3" PointY="2.625" />
+        <AssociationConnector Association="ShopTestDBModel.FK_Orders_Users" />
+        <AssociationConnector Association="ShopTestDBModel.FK_PriductsInOrders_Orders" />
+        <AssociationConnector Association="ShopTestDBModel.FK_PriductsInOrders_Products" />
+        <AssociationConnector Association="ShopTestDBModel.FK_UsersProducts_Products" />
+        <AssociationConnector Association="ShopTestDBModel.FK_UsersProducts_Users" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
