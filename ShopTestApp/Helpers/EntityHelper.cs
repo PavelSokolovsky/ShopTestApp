@@ -10,5 +10,6 @@ namespace ShopTestApp.Helpers
     public static class EntityHelper
     {
         public static ShopTestDBEntities shopDB = new ShopTestDBEntities();
+        
     }
 }

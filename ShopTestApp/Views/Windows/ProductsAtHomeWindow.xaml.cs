@@ -1,4 +1,5 @@
 ﻿using ShopTestApp.Helpers;
+using ShopTestApp.Models;
 using ShopTestApp.Views.Pages;
 using System;
 using System.Collections.Generic;
@@ -24,15 +25,22 @@ namespace ShopTestApp.Views.Windows
         public static MyProductsPage productAtHomePage = new MyProductsPage();
         public static ChangeAmountPage changeAmountPage = new ChangeAmountPage();
         public static OrdersPage ordersPage = new OrdersPage();
-        public  AuthWindow authWindow = new AuthWindow();
+        public AuthWindow authWindow = new AuthWindow();
+        
         public ProductsAtHomeWindow()
         {
             InitializeComponent();
-            
+
             MakeOrder makeOrder = new MakeOrder();
-            makeOrder.CheckAndCreateOrders();
-            AddProductsToOrder addProductsToOrder = new AddProductsToOrder();
-            addProductsToOrder.AddProduct();
+            System.Timers.Timer timer = new System.Timers.Timer();
+            timer.Interval = 10000;
+            timer.Elapsed += (sender, e) =>
+            {
+                makeOrder.CheckAndCloseOrders();
+            };
+            timer.Start();
+
+         
         }
 
         private void MyProducts_Click(object sender, RoutedEventArgs e)
@@ -52,8 +60,11 @@ namespace ShopTestApp.Views.Windows
 
         private void ExitBtn_Click(object sender, RoutedEventArgs e)
         {
-            authWindow.Show();
-            this.Close();
+            
+                
+                authWindow.Show();
+                this.Close();
+            
         }
     }
 }

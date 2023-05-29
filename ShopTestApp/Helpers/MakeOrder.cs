@@ -2,6 +2,7 @@
 using ShopTestApp.Views.Windows;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,40 +12,100 @@ namespace ShopTestApp.Helpers
 {
     public class MakeOrder
     {
+        private ShopTestDBEntities shopTestDB;
+        public MakeOrder()
+        {
+            shopTestDB= new ShopTestDBEntities();
+        }
+
+
         public void CheckAndCreateOrders()
-        {   
-            AuthWindow authWindow = new AuthWindow();
-            var minValue = Helpers.EntityHelper.shopDB.UsersProducts.FirstOrDefault(i => i.amountMin <= i.amountCurrent);
-            var idAuthUser = 1;
-            var active = Helpers.EntityHelper.shopDB.Orders.FirstOrDefault(i => i.isActive == true);
-            if (active != null)
-            {
-                MessageBox.Show("Имеется активный зака. Уточните информацию на странице Заказы");
-                
-            }
-            else
-            {
-                if (minValue.amountMin <= minValue.amountCurrent)
+        {
+            
+            
+
+                var minValue = shopTestDB.UsersProducts.FirstOrDefault(i => i.amountMin >= i.amountCurrent && i.amountMin > 0);
+                var idAuthUser = shopTestDB.Users.FirstOrDefault(i => i.login == AuthWindow.userLogin && i.password == AuthWindow.userPassword);
+                var activeForCheck = shopTestDB.Orders.FirstOrDefault(i => i.isActive == true);
+
+                if (activeForCheck == null && minValue != null)
                 {
                     Orders newOrder = new Orders();
                     newOrder.orderDate = DateTime.Now;
-                    newOrder.idUsers = idAuthUser;
+                    newOrder.idUsers = idAuthUser.id;
                     newOrder.isActive = true;
-                    Helpers.EntityHelper.shopDB.Orders.Add(newOrder);
-                    Helpers.EntityHelper.shopDB.SaveChanges();
-                    MessageBox.Show("Только что был создан активный заказ");
+                    shopTestDB.Orders.Add(newOrder);
+                    shopTestDB.SaveChanges();
+
+                    CheckAndCloseOrders();
                 }
-                else MessageBox.Show("затычка");
+            else if (activeForCheck != null && minValue == null || activeForCheck != null && minValue != null || activeForCheck == null && minValue == null)
+            {
+                CheckAndCloseOrders();
             }
+
+                    
+
+            
+        }
+        public void CheckAndCloseOrders()
+        {
+            
+            
+
+                
+                var minValue = shopTestDB.UsersProducts.FirstOrDefault(i => i.amountCurrent == i.amountMin);
+                var activeForCheck = shopTestDB.Orders.FirstOrDefault(i => i.isActive == true);
+                if (activeForCheck == null)
+                {
+                    CheckAndCreateOrders();
+                }
+
+
+                else if (activeForCheck != null)
+                {
+                    DateTime date1 = activeForCheck.orderDate;
+                    DateTime date2 = DateTime.Now;
+                    TimeSpan difference = date2 - date1;
+                    int daysDifference = difference.Days;
+                    if (activeForCheck != null && difference.Days > 7 && shopTestDB.UsersProducts.All(i => i.amountCurrent < i.amountMAX))
+                    {
+                        AddProductsToOrder addProductsToOrder = new AddProductsToOrder();
+                        addProductsToOrder.AddProduct();
+
+                    }
+                    else if (activeForCheck != null && difference.Days < 7 && minValue.amountCurrent <= minValue.amountMin)
+
+                    {
+                        AddProductsToOrder addProductsToOrder = new AddProductsToOrder();
+                        addProductsToOrder.AddProduct();
+
+                    }
+                    else CheckAndCreateOrders();
+
+                }
+            
+            
+
+            
 
 
 
 
 
         }
-    }
-}
 
+    }
+
+
+
+
+
+
+
+
+
+}
 
 
 

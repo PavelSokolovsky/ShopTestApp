@@ -13,21 +13,39 @@ namespace ShopTestApp.Helpers
     { 
         public void AddProduct()
         {
-            AuthWindow authWindow = new AuthWindow();
-            var anyActiveOrder = Helpers.EntityHelper.shopDB.Orders.FirstOrDefault(i => i.isActive == true);
-            var userForOrder = 1;
-            if (anyActiveOrder != null )
+            var anyActive = Helpers.EntityHelper.shopDB.Orders.FirstOrDefault(i => i.isActive == true);
+            var anyToBuy = Helpers.EntityHelper.shopDB.UsersProducts.Where(i => i.amountMAX > i.amountCurrent);
+            if (anyActive != null && anyToBuy!=null)
             {
-                PriductsInOrders newProductInOrder = new PriductsInOrders();
-                newProductInOrder.idProducts = 1;
-                newProductInOrder.idOrder = 1;
-                newProductInOrder.amountInOrder = 1;
-                Helpers.EntityHelper.shopDB.PriductsInOrders.Add(newProductInOrder);
-                Helpers.EntityHelper.shopDB.SaveChanges();
+                foreach (var item in anyToBuy) 
+                {
+
+                    if (item.amountCurrent < item.amountMAX)
+                    {
+                        int toAdd = item.amountMAX - item.amountCurrent;
+                        PriductsInOrders priductsInOrders  =  new PriductsInOrders();
+                        priductsInOrders.amountInOrder = toAdd;
+                        priductsInOrders.idOrder = anyActive.id;
+                        priductsInOrders.idProducts = item.idProducts;
+                        Helpers.EntityHelper.shopDB.PriductsInOrders.Add(priductsInOrders);
+                        
+                    }
+
+                }
+                anyActive.isActive = false;
                 
+                foreach (var item in anyToBuy)
+                {
+                    item.amountCurrent = item.amountMAX;
+                    
+                }
+                Helpers.EntityHelper.shopDB.SaveChanges();
             }
+            MakeOrder make  =   new MakeOrder();
+            make.CheckAndCreateOrders();
+            
         }
 
-        
+
     }
 }

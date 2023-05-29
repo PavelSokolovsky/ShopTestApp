@@ -71,6 +71,7 @@
     <Compile Include="Helpers\AddProductsToOrder.cs" />
     <Compile Include="Helpers\EntityHelper.cs" />
     <Compile Include="Helpers\MakeOrder.cs" />
+    <Compile Include="Helpers\SaveUserId.cs" />
     <Compile Include="Helpers\TotalOrder.cs" />
     <Compile Include="Models\Model1.Context.cs">
       <AutoGen>True</AutoGen>
