@@ -41,8 +41,7 @@ namespace ShopTestApp.Helpers
                 }
                 Helpers.EntityHelper.shopDB.SaveChanges();
             }
-            MakeOrder make  =   new MakeOrder();
-            make.CheckAndCreateOrders();
+            
             
         }
 

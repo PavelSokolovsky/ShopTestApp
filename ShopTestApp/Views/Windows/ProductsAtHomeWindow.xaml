@@ -19,7 +19,7 @@
             <Button Content="Изменить запасы" Width="100" Margin="5" Name="ChangeAmount" Click="ChangeAmount_Click"/>
             <Button Content="Заказы" Width="100" Margin="5" Name="OrdersHistory" Click="OrdersHistory_Click"/>
             <Button Content="Выход" Width="100" Margin="5" Name="ExitBtn" Click="ExitBtn_Click"/>
-            <Button Content="Button 5" Width="100" Margin="5"/>
+            
         </StackPanel>
     </Grid>
 </Window>

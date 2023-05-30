@@ -12,82 +12,85 @@ namespace ShopTestApp.Helpers
 {
     public class MakeOrder
     {
-        private ShopTestDBEntities shopTestDB;
-        public MakeOrder()
-        {
-            shopTestDB= new ShopTestDBEntities();
-        }
+     
 
 
         public void CheckAndCreateOrders()
         {
-            
-            
 
-                var minValue = shopTestDB.UsersProducts.FirstOrDefault(i => i.amountMin >= i.amountCurrent && i.amountMin > 0);
-                var idAuthUser = shopTestDB.Users.FirstOrDefault(i => i.login == AuthWindow.userLogin && i.password == AuthWindow.userPassword);
-                var activeForCheck = shopTestDB.Orders.FirstOrDefault(i => i.isActive == true);
 
-                if (activeForCheck == null && minValue != null)
+
+
+
+            var idAuthUser = Helpers.EntityHelper.shopDB.Users.FirstOrDefault(i => i.login == AuthWindow.userLogin && i.password == AuthWindow.userPassword);
+            var activeForCheck = Helpers.EntityHelper.shopDB.Orders.FirstOrDefault(i => i.isActive == true);
+
+                if (activeForCheck == null)
                 {
                     Orders newOrder = new Orders();
                     newOrder.orderDate = DateTime.Now;
                     newOrder.idUsers = idAuthUser.id;
                     newOrder.isActive = true;
-                    shopTestDB.Orders.Add(newOrder);
-                    shopTestDB.SaveChanges();
-
-                    CheckAndCloseOrders();
+                Helpers.EntityHelper.shopDB.Orders.Add(newOrder);
+                Helpers.EntityHelper.shopDB.SaveChanges();
+ 
                 }
-            else if (activeForCheck != null && minValue == null || activeForCheck != null && minValue != null || activeForCheck == null && minValue == null)
-            {
-                CheckAndCloseOrders();
-            }
+            CheckAndCloseOrders();
 
-                    
 
-            
+
+
         }
         public void CheckAndCloseOrders()
         {
             
             
 
+                var isActive = Helpers.EntityHelper.shopDB.Orders.FirstOrDefault(i => i.isActive==true);
+                var minValue = Helpers.EntityHelper.shopDB.UsersProducts.FirstOrDefault(i => i.amountCurrent == i.amountMin);
                 
-                var minValue = shopTestDB.UsersProducts.FirstOrDefault(i => i.amountCurrent == i.amountMin);
-                var activeForCheck = shopTestDB.Orders.FirstOrDefault(i => i.isActive == true);
-                if (activeForCheck == null)
+                if (minValue != null && isActive != null)
                 {
-                    CheckAndCreateOrders();
-                }
-
-
-                else if (activeForCheck != null)
-                {
-                    DateTime date1 = activeForCheck.orderDate;
-                    DateTime date2 = DateTime.Now;
-                    TimeSpan difference = date2 - date1;
-                    int daysDifference = difference.Days;
-                    if (activeForCheck != null && difference.Days > 7 && shopTestDB.UsersProducts.All(i => i.amountCurrent < i.amountMAX))
-                    {
-                        AddProductsToOrder addProductsToOrder = new AddProductsToOrder();
-                        addProductsToOrder.AddProduct();
-
-                    }
-                    else if (activeForCheck != null && difference.Days < 7 && minValue.amountCurrent <= minValue.amountMin)
-
-                    {
-                        AddProductsToOrder addProductsToOrder = new AddProductsToOrder();
-                        addProductsToOrder.AddProduct();
-
-                    }
-                    else CheckAndCreateOrders();
+                AddProductsToOrder addProductsToOrder = new AddProductsToOrder();
+                addProductsToOrder.AddProduct();
 
                 }
-            
-            
+            else
+            {
+                return;
+            }
 
-            
+
+
+
+
+
+
+            //{
+            //    DateTime date1 = activeForCheck.orderDate;
+            //    DateTime date2 = DateTime.Now;
+            //    TimeSpan difference = date2 - date1;
+            //    int daysDifference = difference.Days;
+            //    if (activeForCheck != null && difference.Days > 7 && shopTestDB.UsersProducts.All(i => i.amountCurrent < i.amountMAX))
+            //        {
+            //            AddProductsToOrder addProductsToOrder = new AddProductsToOrder();
+            //            addProductsToOrder.AddProduct();
+
+            //        }
+            //        else if (activeForCheck != null && difference.Days < 7 )
+
+            //        {
+            //            AddProductsToOrder addProductsToOrder = new AddProductsToOrder();
+            //            addProductsToOrder.AddProduct();
+
+            //        }
+            //        else CheckAndCreateOrders();
+
+            //    }
+
+
+
+
 
 
 

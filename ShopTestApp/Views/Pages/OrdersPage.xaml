@@ -6,25 +6,32 @@
       xmlns:local="clr-namespace:ShopTestApp.Views.Pages"
       mc:Ignorable="d" 
       d:DesignHeight="450" d:DesignWidth="800"
-      Title="OrdersPage">
+      Title="OrdersPage"
+      Loaded="Page_Loaded">
 
     <Grid>
         <Grid.ColumnDefinitions>
         <ColumnDefinition Width="2*"/>
         <ColumnDefinition Width="1*"/>
-        <ColumnDefinition Width="3*"/>
+        <ColumnDefinition Width="2*"/>
         </Grid.ColumnDefinitions>
-        <DataGrid x:Name="dataGridOrder" AutoGenerateColumns="False" Margin="5">
+        <DataGrid x:Name="dataGridOrder" AutoGenerateColumns="False" Margin="5" SelectionChanged="dataGridOrder_SelectionChanged">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Стоимость" Binding="{Binding id}" Width="*"/>
+                <DataGridTextColumn Header="Дата" Binding="{Binding orderDate}" Width="*"/>
+                <DataGridTextColumn Header="Активность" Binding="{Binding isActive}" Width="*"/>
             </DataGrid.Columns>
         </DataGrid>
         <StackPanel Grid.Column="2">
-            <TextBlock TextWrapping="Wrap" Name="OrderDiscriptionTbl"/>
+            <DataGrid Name="dataGridProducts"  AutoGenerateColumns="False" Margin="5">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Header="Название продукта" Binding="{Binding Products.name}" Width="*"/>
+                    <DataGridTextColumn Header="Количество в заказе" Binding="{Binding amountInOrder}" Width="*"/>
+                </DataGrid.Columns>
+            </DataGrid>
         </StackPanel>
         <StackPanel Grid.Column="1">
-            <DatePicker Width="100"/>
-            <Button Height="30" Content="Показать" Margin="0 5 0 0"/>
+            <DatePicker Width="100" Name="datePicker"/>
+            <Button Height="30" Content="Показать" Margin="0 5 0 0" Click="Button_Click"/>
         </StackPanel>
     </Grid>
 </Page>

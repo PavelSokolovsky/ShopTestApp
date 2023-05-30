@@ -26,23 +26,31 @@ namespace ShopTestApp.Views.Windows
         public static ChangeAmountPage changeAmountPage = new ChangeAmountPage();
         public static OrdersPage ordersPage = new OrdersPage();
         public AuthWindow authWindow = new AuthWindow();
-        
+        private MakeOrder makeOrder;
+        private System.Timers.Timer timer;
         public ProductsAtHomeWindow()
         {
             InitializeComponent();
+            
+            this.Loaded += ProductsAtHomeWindow_Loaded;
 
-            MakeOrder makeOrder = new MakeOrder();
-            System.Timers.Timer timer = new System.Timers.Timer();
-            timer.Interval = 10000;
-            timer.Elapsed += (sender, e) =>
-            {
-                makeOrder.CheckAndCloseOrders();
-            };
-            timer.Start();
-
-         
         }
+        private void ProductsAtHomeWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            makeOrder = new MakeOrder();
 
+            timer = new System.Timers.Timer();
+            timer.Interval = 1000;
+            timer.Elapsed += Timer_Elapsed;
+            timer.Start();
+        }
+        private void Timer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                makeOrder.CheckAndCreateOrders();
+            });
+        }
         private void MyProducts_Click(object sender, RoutedEventArgs e)
         {
             frame.Content = productAtHomePage;

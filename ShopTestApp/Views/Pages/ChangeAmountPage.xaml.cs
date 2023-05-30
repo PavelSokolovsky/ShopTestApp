@@ -1,4 +1,5 @@
 ﻿using ShopTestApp.Models;
+using ShopTestApp.Views.Windows;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,8 +30,8 @@ namespace ShopTestApp.Views.Pages
         private void SaveAmountBtn_Click(object sender, RoutedEventArgs e)
         {
             string barcode = barcodeTextBox.Text;
-
-            UsersProducts productInHome = Helpers.EntityHelper.shopDB.UsersProducts.FirstOrDefault(p => p.Products.barCode == barcode);
+            var userID = Helpers.EntityHelper.shopDB.Users.FirstOrDefault(i => i.login == AuthWindow.userLogin && i.password == AuthWindow.userPassword);
+            UsersProducts productInHome = Helpers.EntityHelper.shopDB.UsersProducts.FirstOrDefault(p => p.Products.barCode == barcode && p.idUsers ==  userID.id);
 
             if (productInHome != null)
             {
